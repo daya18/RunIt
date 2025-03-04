@@ -1,5 +1,8 @@
 # RunIt
 
+![image](https://github.com/user-attachments/assets/8d700662-ee6e-4b66-94e8-42e6e9dfd40b)
+![image](https://github.com/user-attachments/assets/0444552c-9a94-477d-b36c-57c9baaacdcd)
+
 ## Dependencies
  * ImGui
  * GLFW

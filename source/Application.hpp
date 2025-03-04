@@ -19,6 +19,14 @@ namespace runit
 			std::string command;
 		};
 
+		Command & AddCommand ( std::string const & name, std::string const & command );
+		Command & AddCommand ();
+		void DeleteCommand ( std::string const & name );
+		void CreateDefaultDataFile ();
+		void Load ();
+		void Save ();
+		void ShowCommandEditModal ();
+
 		static std::string const dataFilePath;
 
 		GLFWwindow * window;
@@ -26,5 +34,8 @@ namespace runit
 
 		std::vector <Command> commands;
 		std::string workingDirectory;
+		Command * activeCommand;
+		std::string newCommandName;
+		std::string newCommand;
 	};
 }

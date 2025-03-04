@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <fstream>
 #include <thread>
+#include <iostream>
 
 #include <imgui.h>
 #include <imgui_stdlib.h>

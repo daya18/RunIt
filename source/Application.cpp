@@ -23,6 +23,8 @@ namespace runit
 		if ( !std::filesystem::exists ( dataFilePath ) )
 			CreateDefaultDataFile ();
 
+		ImGui::GetIO ().FontGlobalScale = 1.5f;
+
 		Load ();
 	}
 
@@ -48,8 +50,15 @@ namespace runit
 
 			ImGui::NewFrame ();
 
-			ImGui::SetNextWindowPos ( { 0, 0 } );
-			ImGui::SetNextWindowSize ( ImGui::GetIO ().DisplaySize );
+			ShowMenuBar ();
+
+			ImGui::SetNextWindowPos ( { 0, ImGui::GetFrameHeight () });
+
+			ImGui::SetNextWindowSize ( { 
+				ImGui::GetIO ().DisplaySize.x, 
+				ImGui::GetIO ().DisplaySize.y - ImGui::GetFrameHeight () 
+			} );
+			
 			ImGui::Begin ( "RunIt", nullptr, ImGuiWindowFlags_NoDecoration );
 
 			if ( ImGui::IsWindowHovered () && ImGui::IsMouseClicked ( 1 ) ) 
@@ -62,7 +71,7 @@ namespace runit
 
 			for ( int i = 0; auto & command : commands )
 			{
-				bool buttonPressed { ImGui::Button ( command.name.data (), { 100, 50 } ) };
+				bool buttonPressed { ImGui::Button ( command.name.data (), { ImGui::GetWindowContentRegionWidth (), 50})};
 
 				if ( ImGui::IsItemHovered () && ImGui::IsMouseClicked ( 1 ) )
 				{
@@ -83,8 +92,8 @@ namespace runit
 					}
 				}
 
-				if ( ((i++) + 1) % 3 != 0 )
-					ImGui::SameLine ();
+				//if ( ((i++) + 1) % 3 != 0 )
+				//	ImGui::SameLine ();
 			}
 			
 			bool openButtonEditPopup { false };
@@ -156,6 +165,62 @@ namespace runit
 			if ( ImGui::Button ( "Cancel", ImVec2 ( 120, 0 ) ) ) 
 			{
 				ImGui::CloseCurrentPopup ();
+			}
+
+			ImGui::EndPopup ();
+		}
+	}
+
+	void Application::ShowMenuBar ()
+	{
+		bool openScaleModal { false };
+
+		if ( ImGui::BeginMainMenuBar () )
+		{
+			if ( ImGui::BeginMenu ( "File" ) )
+			{
+				if ( ImGui::MenuItem ( "Open", "Ctrl+O" ) )
+				{
+				}
+				if ( ImGui::MenuItem ( "Save", "Ctrl+S" ) )
+				{
+				}
+				if ( ImGui::MenuItem ( "Exit", "Alt+F4" ) )
+				{
+				}
+				ImGui::EndMenu ();
+			}
+
+			if ( ImGui::BeginMenu ( "Window" ) )
+			{
+				if ( ImGui::MenuItem ( "Scale" ) )
+					openScaleModal = true;
+
+				ImGui::EndMenu ();
+				
+				ShowScaleModal ();
+
+			}
+
+			ImGui::EndMainMenuBar ();
+		}
+
+		if ( openScaleModal )
+			ImGui::OpenPopup ( "Scale" );
+	}
+	
+	void Application::ShowScaleModal ()
+	{
+		ImVec2 center = ImGui::GetMainViewport ()->GetCenter ();
+		ImGui::SetNextWindowPos ( center, ImGuiCond_Appearing, ImVec2 ( 0.5f, 0.5f ) );
+		
+		if ( ImGui::BeginPopupModal ( "Scale", nullptr, ImGuiWindowFlags_AlwaysAutoResize ) )
+		{
+			float f;
+
+			if ( ImGui::SliderFloat ( "##1098", &f, 0.0f, 10.0f ) )
+			{
+
 			}
 
 			ImGui::EndPopup ();

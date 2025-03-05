@@ -26,6 +26,8 @@ namespace runit
 		void Load ();
 		void Save ();
 		void ShowCommandEditModal ();
+		void ShowMenuBar ();
+		void ShowScaleModal ();
 
 		static std::string const dataFilePath;
 

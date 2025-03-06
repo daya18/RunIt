@@ -23,8 +23,6 @@ namespace runit
 		if ( !std::filesystem::exists ( dataFilePath ) )
 			CreateDefaultDataFile ();
 
-		ImGui::GetIO ().FontGlobalScale = 1.5f;
-
 		Load ();
 	}
 
@@ -41,6 +39,8 @@ namespace runit
 	{
 		while ( !glfwWindowShouldClose ( window ) )
 		{
+			openScaleModal = false;
+			
 			glfwPollEvents ();
 
 			glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -128,7 +128,11 @@ namespace runit
 				ImGui::OpenPopup ( "Edit Command" );
 			}
 
+			if ( openScaleModal )
+				ImGui::OpenPopup("Scale");
+
 			ShowCommandEditModal ();
+			ShowScaleModal ();
 
 			ImGui::End ();
 
@@ -173,8 +177,6 @@ namespace runit
 
 	void Application::ShowMenuBar ()
 	{
-		bool openScaleModal { false };
-
 		if ( ImGui::BeginMainMenuBar () )
 		{
 			if ( ImGui::BeginMenu ( "File" ) )
@@ -204,9 +206,6 @@ namespace runit
 
 			ImGui::EndMainMenuBar ();
 		}
-
-		if ( openScaleModal )
-			ImGui::OpenPopup ( "Scale" );
 	}
 	
 	void Application::ShowScaleModal ()
@@ -214,13 +213,11 @@ namespace runit
 		ImVec2 center = ImGui::GetMainViewport ()->GetCenter ();
 		ImGui::SetNextWindowPos ( center, ImGuiCond_Appearing, ImVec2 ( 0.5f, 0.5f ) );
 		
-		if ( ImGui::BeginPopupModal ( "Scale", nullptr, ImGuiWindowFlags_AlwaysAutoResize ) )
+		if ( ImGui::BeginPopup ( "Scale", ImGuiWindowFlags_AlwaysAutoResize ) )
 		{
-			float f;
-
-			if ( ImGui::SliderFloat ( "##1098", &f, 0.0f, 10.0f ) )
+			if ( ImGui::SliderFloat ( "Scale", &scale, 0.5f, 2.0f ) )
 			{
-
+				ImGui::GetIO().FontGlobalScale = scale;
 			}
 
 			ImGui::EndPopup ();

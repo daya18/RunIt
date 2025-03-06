@@ -39,5 +39,7 @@ namespace runit
 		Command * activeCommand;
 		std::string newCommandName;
 		std::string newCommand;
+		bool openScaleModal { false };
+		float scale{ 1.0f };
 	};
 }
